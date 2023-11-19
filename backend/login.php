@@ -1,0 +1,31 @@
+<?php
+
+require './../config/db.php';
+if (isset($_POST['submit'])) {
+    // $password = "admin"; // Ganti dengan kata sandi yang ingin di-hash
+
+    // // Buat hash dari password
+    // $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+    // echo $hashed_password;
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $user = mysqli_query($db_connect, "SELECT * FROM users WHERE email = '$email'");
+    if (mysqli_num_rows($user) > 0) {
+        $data = mysqli_fetch_assoc($user);
+        if (password_verify($password, $data['password'])) {
+            header("Location: ../../web-programming-course/show.php");
+        } else {
+            echo "password salah";
+            die;
+        }
+
+    } else {
+        echo "email atau password salah";
+        die;
+    }
+} else {
+    echo "nothing";
+}
+?>
